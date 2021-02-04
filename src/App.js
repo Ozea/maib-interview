@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import instance from './utils/axios';
-import './App.css';
 import AdminLayout from './layouts/AdminLayout';
+import './App.css';
 
 function App() {
   useEffect(() => {
