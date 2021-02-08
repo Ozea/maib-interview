@@ -13,7 +13,6 @@ export default function DashboardTable({ data, ...props }) {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log(data.items);
     if (data) {
       setRows(data.items);
     }

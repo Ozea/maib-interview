@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Chart, ArgumentAxis, ValueAxis, AreaSeries } from '@devexpress/dx-react-chart-material-ui';
 import { ArgumentScale, Animation } from '@devexpress/dx-react-chart';
+import { makeStyles } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
 import { scalePoint } from 'd3-scale';
-import { makeStyles } from '@material-ui/core';
+import dayjs from 'dayjs';
 
 const useStyles = makeStyles(theme => ({
   chart: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function CustomChart({ chartData: { items = [] }, ...props }) {
+export default function CustomChart({ chartData: { items = [] }, dates = { startDate: new Date(), endDate: dayjs(new Date()).add(1, 'month').toDate() }, ...props }) {
   const [data, setChartData] = useState();
   const classes = useStyles();
 
@@ -81,7 +82,7 @@ export default function CustomChart({ chartData: { items = [] }, ...props }) {
 
               <div className={classes.titleWrapper}>
                 <span className={classes.firstSpan}>Numar de utilizatori</span>
-                <span className={classes.secondSpan}>21 Sep - 21 Oct</span>
+                <span className={classes.secondSpan}>{dayjs(dates.startDate).format('DD MMM')} - {dayjs(dates.endDate).format('DD MMM')}</span>
               </div>
 
             </Chart>

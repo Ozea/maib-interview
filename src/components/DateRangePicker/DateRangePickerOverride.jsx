@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { makeStyles, Typography } from '@material-ui/core';
+import dayjs from 'dayjs';
 
 const useStyles = makeStyles(theme => ({
   dateRangePicker: {
@@ -33,9 +34,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function DateRangePickerOverride({ onChangeDates, ...props }) {
-  const [value, setValue] = useState([new Date(), new Date()]);
+const currentDate = new Date();
+const currentDatePlusOneMonth = dayjs(currentDate).add(1, 'month').toDate();
+
+export default function DateRangePickerOverride({ onChangeDates, dates = [currentDate, currentDatePlusOneMonth], daysBetweenDates, ...props }) {
+  const [value, setValue] = useState([]);
   const classes = useStyles();
+
+  useEffect(() => {
+    if (dates.length) {
+      setValue(dates);
+    }
+  }, [dates]);
 
   const onChange = newValue => {
     setValue(newValue);
@@ -45,7 +55,7 @@ export default function DateRangePickerOverride({ onChangeDates, ...props }) {
   return (
     <form>
       <div className={classes.dateRangePicker}>
-        <Typography className={classes.label}>Last 30 days</Typography>
+        <Typography className={classes.label}>Last {daysBetweenDates || 0} days</Typography>
         <DateRangePicker
           onChange={onChange}
           value={value} />
