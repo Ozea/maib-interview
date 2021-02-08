@@ -1,6 +1,7 @@
+import { supportMock } from '../mock/support';
 import { chartMock } from '../mock/chart';
 import { tableMock } from '../mock/table';
-import { supportMock } from '../mock/support';
+import { cardMock } from '../mock/card';
 import { Server } from 'miragejs';
 import faker from 'faker';
 
@@ -13,6 +14,8 @@ export function makeServer() {
       this.get('/chart', () => (chartMock))
 
       this.get('/table', () => (tableMock))
+
+      this.get('/card', () => (cardMock))
 
       this.get('/support', () => (supportMock))
     }

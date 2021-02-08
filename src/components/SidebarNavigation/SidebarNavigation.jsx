@@ -14,11 +14,17 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  text: {
+    color: theme.palette.text.primary
+  },
   icon: {
     color: theme.palette.common.black
   },
   activeLink: {
     color: theme.palette.primary.light,
+    '& span': {
+      color: theme.palette.primary.light
+    },
     '& svg': {
       color: theme.palette.primary.light
     }
@@ -41,12 +47,12 @@ export default function SidebarNavigation() {
       <List>
         <ListItem button component={customLink} to="/dashboard">
           <ListItemIcon><SpeedIcon className={classes.icon} /></ListItemIcon>
-          <ListItemText primary="Dashboard" />
+          <ListItemText className={classes.text}>Dashboard</ListItemText>
         </ListItem>
 
         <ListItem button component={customLink} to="/support">
           <ListItemIcon><HelpIcon className={classes.icon} /></ListItemIcon>
-          <ListItemText primary="Support" />
+          <ListItemText className={classes.text}>Support</ListItemText>
         </ListItem>
       </List>
     </Drawer>

@@ -44,7 +44,7 @@ export default function TopBar() {
   }, [history, pageTitle]);
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar position="fixed" className={classes.appBar} elevation={0}>
       <Toolbar>
         <Typography variant="h5" className={classes.title}>
           <AccountBalanceOutlined />
