@@ -1,6 +1,6 @@
+import { generateTableMock } from '../mock/table';
 import { supportMock } from '../mock/support';
 import { chartMock } from '../mock/chart';
-import { tableMock } from '../mock/table';
 import { cardMock } from '../mock/card';
 import { Server } from 'miragejs';
 import faker from 'faker';
@@ -13,7 +13,11 @@ export function makeServer() {
 
       this.get('/chart', () => (chartMock))
 
-      this.get('/table', () => (tableMock))
+      this.get('/table', (schema, request) => {
+        const { startdate, enddate } = request.queryParams;
+
+        return generateTableMock(startdate, enddate);
+      });
 
       this.get('/card', () => (cardMock))
 

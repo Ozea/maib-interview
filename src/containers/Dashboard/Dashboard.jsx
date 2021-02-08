@@ -1,10 +1,11 @@
 import { Button, CircularProgress, Grid, makeStyles, Paper, Tab, Tabs, Typography } from '@material-ui/core';
 import DateRangePickerOverride from '../../components/DateRangePicker/DateRangePickerOverride';
-import CustomChart from '../../components/Chart/Chart';
+import DashboardTable from '../../components/DashboardTable/DashboardTable';
+import CustomChart from '../../components/Chart/CustomChart';
 import React, { useEffect, useState } from 'react';
 import instance from '../../utils/axios';
+import dayjs from 'dayjs';
 import clsx from 'clsx';
-import DashboardTable from '../../components/DashboardTable/DashboardTable';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -64,17 +65,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const currentDate = new Date();
+const currentDatePlusOneMonth = dayjs(currentDate).add(1, 'month').toDate();
+
 export default function Dashboard() {
   const [state, setState] = useState({
     tabValue: 0,
-    chartData: [],
     tableData: [],
-    cardInfo: {},
-    dates: {
-      startDate: '',
-      endDate: ''
-    }
+    cardInfo: {}
   });
+  const [dates, setDates] = useState({
+    startDate: currentDate,
+    endDate: currentDatePlusOneMonth
+  });
+  const [daysBetweenSelectedDates, setDaysBetweenSelectedDates] = useState(0);
+  const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
@@ -83,18 +88,36 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    calculateDaysBetween(dates.startDate, dates.endDate);
+    fetchData();
+  }, [dates]);
+
+  const calculateDaysBetween = (firstDate, secondDate) => {
+    const days = Math.round((secondDate - firstDate) / (1000 * 60 * 60 * 24));
+    setDaysBetweenSelectedDates(days);
+  }
+
+  const fetchData = () => {
     setLoading(true);
 
-    Promise.all([instance.get('/api/chart'), instance.get('/api/table'), instance.get('/api/card')])
+    Promise.all([
+      instance.get('/api/chart'),
+      instance.get(`/api/table/?startdate=${dates.startDate.toISOString()}&enddate=${dates.endDate.toISOString()}`),
+      instance.get('/api/card')
+    ])
       .then(result => {
         if (result.length) {
           let chartData = result[0].data;
           let tableData = result[1].data;
           let cardInfo = result[2].data.data;
 
+          setChartData(chartData);
           setState({
             ...state,
-            chartData,
             tableData,
             cardInfo
           });
@@ -105,16 +128,14 @@ export default function Dashboard() {
         setLoading(false);
         console.error(err);
       });
-  }, []);
+  }
 
   const onChangeDates = value => {
-    setState({
-      ...state,
-      dates: {
-        startDate: value[0],
-        endDate: value[1]
-      }
-    })
+    setDates({
+      ...dates,
+      startDate: value[0],
+      endDate: value[1]
+    });
   }
 
   return (
@@ -135,8 +156,8 @@ export default function Dashboard() {
             <Button className={clsx(classes.offset, classes.leftButton)} color="secondary" variant="contained">Configura Raport</Button>
           </Grid>
 
-          <Grid item xs={6}>
-            <DateRangePickerOverride onChangeDates={onChangeDates} />
+          <Grid item xs={6} className={classes.centered}>
+            <DateRangePickerOverride onChangeDates={onChangeDates} dates={[dates.startDate, dates.endDate]} daysBetweenDates={daysBetweenSelectedDates} />
           </Grid>
         </Grid>
 
@@ -153,7 +174,9 @@ export default function Dashboard() {
                   : (<>
                     <Typography variant="h4">Instalari pe dispozitive active</Typography>
                     <div className={classes.installations}>
-                      <span>{state.cardInfo.monthlyInstallation} <span>+ {state.cardInfo.prevMonthComparison}% vs previous 30 days</span></span>
+                      <span>
+                        {state.cardInfo.monthlyInstallation} <span>+ {state.cardInfo.prevMonthComparison}% vs previous {daysBetweenSelectedDates} days</span>
+                      </span>
                     </div>
                   </>)
               }
@@ -171,7 +194,7 @@ export default function Dashboard() {
                 ? <CircularProgress />
                 : (
                   <div className={classes.fullWidth}>
-                    <CustomChart chartData={state.chartData} />
+                    <CustomChart chartData={chartData} dates={dates} />
                   </div>
                 )
             }
