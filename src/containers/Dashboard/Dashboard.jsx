@@ -80,6 +80,7 @@ export default function Dashboard() {
   });
   const [daysBetweenSelectedDates, setDaysBetweenSelectedDates] = useState(0);
   const [chartData, setChartData] = useState([]);
+  const [timer, setTimer] = useState(0);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
@@ -88,13 +89,23 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     calculateDaysBetween(dates.startDate, dates.endDate);
     fetchData();
   }, [dates]);
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      setTimer(timer => timer + 1);
+    }, 1000);
+
+    if (loading || timer === 10) {
+      clearInterval(interval);
+      setTimer(0);
+      fetchData();
+    }
+
+    return () => clearInterval(interval);
+  }, [timer, loading]);
 
   const calculateDaysBetween = (firstDate, secondDate) => {
     const days = Math.round((secondDate - firstDate) / (1000 * 60 * 60 * 24));
@@ -104,9 +115,9 @@ export default function Dashboard() {
   const fetchData = () => {
     setLoading(true);
 
-    Promise.all([
+    return Promise.all([
       instance.get('/api/chart'),
-      instance.get(`/api/table/?startdate=${dates.startDate.toISOString()}&enddate=${dates.endDate.toISOString()}`),
+      instance.get(`/api/table?startdate=${dates.startDate.toISOString()}&enddate=${dates.endDate.toISOString()}`),
       instance.get('/api/card')
     ])
       .then(result => {
@@ -189,15 +200,9 @@ export default function Dashboard() {
 
         <Grid container>
           <Grid item xs={11} className={classes.centered}>
-            {
-              loading
-                ? <CircularProgress />
-                : (
-                  <div className={classes.fullWidth}>
-                    <CustomChart chartData={chartData} dates={dates} />
-                  </div>
-                )
-            }
+            <div className={classes.fullWidth}>
+              <CustomChart chartData={chartData} dates={dates} loading={loading} />
+            </div>
           </Grid>
         </Grid>
 
@@ -206,11 +211,7 @@ export default function Dashboard() {
 
         <Grid container>
           <Grid item xs={11} className={classes.centered}>
-            {
-              loading
-                ? <CircularProgress />
-                : <DashboardTable data={state.tableData} />
-            }
+            <DashboardTable data={state.tableData} loading={loading} />
           </Grid>
         </Grid>
 
