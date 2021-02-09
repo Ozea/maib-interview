@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { makeServer } from './utils/miragejs.config';
+
+if (process.env.REACT_APP_MOCK_ENABLED === 'true') {
+  makeServer();
+} else {
+  console.log('Application is not in DEV mode. To turn on mock api calls update "REACT_APP_MOCK_ENABLED" value to "true" in .env file');
+}
 
 ReactDOM.render(
   <React.StrictMode>
