@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Chart, ArgumentAxis, ValueAxis, AreaSeries } from '@devexpress/dx-react-chart-material-ui';
-import { ArgumentScale, Animation } from '@devexpress/dx-react-chart';
-import { makeStyles } from '@material-ui/core';
+import { CircularProgress, makeStyles } from '@material-ui/core';
+import { ArgumentScale } from '@devexpress/dx-react-chart';
 import { Paper } from '@material-ui/core';
 import { scalePoint } from 'd3-scale';
 import dayjs from 'dayjs';
@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.common.black
     }
   },
+  spinner: {
+    margin: theme.spacing(3, 4)
+  },
   firstSpan: {
     padding: theme.spacing(3, 0, 0, 3),
     fontWeight: 'bolder',
@@ -42,12 +45,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function CustomChart({ chartData: { items = [] }, dates = { startDate: new Date(), endDate: dayjs(new Date()).add(1, 'month').toDate() }, ...props }) {
+export default function CustomChart({ chartData: { items = [] }, dates = { startDate: new Date(), endDate: dayjs(new Date()).add(1, 'month').toDate() }, loading, ...props }) {
   const [data, setChartData] = useState();
   const classes = useStyles();
 
   useEffect(() => {
-    if (items) {
+    if (items && !loading) {
       setChartData(items);
     }
   }, [props, items]);
@@ -59,7 +62,7 @@ export default function CustomChart({ chartData: { items = [] }, dates = { start
   return (
     <Paper className={classes.paper}>
       {
-        data
+        !loading && data
           ? (
             <Chart
               data={data}
@@ -78,8 +81,6 @@ export default function CustomChart({ chartData: { items = [] }, dates = { start
                 valueField="page"
                 argumentField="page" />
 
-              <Animation />
-
               <div className={classes.titleWrapper}>
                 <span className={classes.firstSpan}>Numar de utilizatori</span>
                 <span className={classes.secondSpan}>{dayjs(dates.startDate).format('DD MMM')} - {dayjs(dates.endDate).format('DD MMM')}</span>
@@ -87,7 +88,7 @@ export default function CustomChart({ chartData: { items = [] }, dates = { start
 
             </Chart>
           )
-          : null
+          : <CircularProgress className={classes.spinner} />
       }
     </Paper>
   );
