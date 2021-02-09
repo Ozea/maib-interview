@@ -1,0 +1,35 @@
+{
+  "files": {
+    "static/js/0.2d984bd9.chunk.js": "/maib-interview/static/js/0.2d984bd9.chunk.js",
+    "static/js/0.2d984bd9.chunk.js.map": "/maib-interview/static/js/0.2d984bd9.chunk.js.map",
+    "main.css": "/maib-interview/static/css/main.ea1455b2.chunk.css",
+    "main.js": "/maib-interview/static/js/main.1874bc66.chunk.js",
+    "main.js.map": "/maib-interview/static/js/main.1874bc66.chunk.js.map",
+    "runtime-main.js": "/maib-interview/static/js/runtime-main.f27fbe29.js",
+    "runtime-main.js.map": "/maib-interview/static/js/runtime-main.f27fbe29.js.map",
+    "static/js/3.593b2c69.chunk.js": "/maib-interview/static/js/3.593b2c69.chunk.js",
+    "static/js/3.593b2c69.chunk.js.map": "/maib-interview/static/js/3.593b2c69.chunk.js.map",
+    "static/js/4.250d1edf.chunk.js": "/maib-interview/static/js/4.250d1edf.chunk.js",
+    "static/js/4.250d1edf.chunk.js.map": "/maib-interview/static/js/4.250d1edf.chunk.js.map",
+    "static/css/5.90bc0d85.chunk.css": "/maib-interview/static/css/5.90bc0d85.chunk.css",
+    "static/js/5.027a8b87.chunk.js": "/maib-interview/static/js/5.027a8b87.chunk.js",
+    "static/js/5.027a8b87.chunk.js.map": "/maib-interview/static/js/5.027a8b87.chunk.js.map",
+    "static/js/6.206a385f.chunk.js": "/maib-interview/static/js/6.206a385f.chunk.js",
+    "static/js/6.206a385f.chunk.js.map": "/maib-interview/static/js/6.206a385f.chunk.js.map",
+    "static/js/7.8d3ac6a5.chunk.js": "/maib-interview/static/js/7.8d3ac6a5.chunk.js",
+    "static/js/7.8d3ac6a5.chunk.js.map": "/maib-interview/static/js/7.8d3ac6a5.chunk.js.map",
+    "static/js/8.324de4f5.chunk.js": "/maib-interview/static/js/8.324de4f5.chunk.js",
+    "static/js/8.324de4f5.chunk.js.map": "/maib-interview/static/js/8.324de4f5.chunk.js.map",
+    "index.html": "/maib-interview/index.html",
+    "static/css/5.90bc0d85.chunk.css.map": "/maib-interview/static/css/5.90bc0d85.chunk.css.map",
+    "static/css/main.ea1455b2.chunk.css.map": "/maib-interview/static/css/main.ea1455b2.chunk.css.map",
+    "static/js/3.593b2c69.chunk.js.LICENSE.txt": "/maib-interview/static/js/3.593b2c69.chunk.js.LICENSE.txt",
+    "static/js/5.027a8b87.chunk.js.LICENSE.txt": "/maib-interview/static/js/5.027a8b87.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f27fbe29.js",
+    "static/js/3.593b2c69.chunk.js",
+    "static/css/main.ea1455b2.chunk.css",
+    "static/js/main.1874bc66.chunk.js"
+  ]
+}
