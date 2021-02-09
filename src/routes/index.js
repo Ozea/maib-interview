@@ -8,6 +8,11 @@ export const routes = [
     component: () => <Redirect to="/dashboard" />
   },
   {
+    path: '/maib-interview/',
+    exact: true,
+    component: () => <Redirect to="/dashboard" />
+  }, // This route is needed to redirect the user when visiting GitHub Pages
+  {
     path: '/dashboard',
     component: lazy(() => import('../containers/Dashboard/Dashboard'))
   },
